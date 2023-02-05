@@ -2,6 +2,7 @@ const Users = require("../models/user-model")
 const asyncHandler = require("express-async-handler")
 
 // POST
+// Public
 // jobs/api/users/register
 const userRegister = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body
@@ -11,9 +12,9 @@ const userRegister = asyncHandler(async (req, res) => {
         throw new Error("You need to enter your email and password")
     }
 
-    const userTest = await Users.find({ email })
+    const userTest = await Users.findOne({ email })
 
-    if (!userTest) {
+    if (userTest) {
         res.status(400)
         throw new Error("You've already registered")
     }
@@ -25,6 +26,7 @@ const userRegister = asyncHandler(async (req, res) => {
 })
 
 // POST
+// Private -> email / password gated
 // jobs/api/users/login
 const userLogin = asyncHandler(async (req, res) => {
     const { email, password } = req.body
